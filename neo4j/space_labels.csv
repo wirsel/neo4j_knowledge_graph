@@ -1,11 +1,35 @@
-space_name|label_name|flow_id|parent_label|move_to_space|rename_label
-S_gsheet|C_gsheet_file|8932||
-S_gsheet|C_gsheet_tab|8943|C_gsheet_file|
-S_gsheet|C_gsheet_row|8931|C_gsheet_tab|
-S_gsheet|C_gsheet_pocket_entry|8929|C_gsheet_row|
-S_uri|C_url|8937||
-S_pocket|C_pocket_entry|8938||
-S_calendar|C_yyyymmdd|8934||
-S_calendar|C_month|8935||
-S_csv|C_csv|8838||
-S_insta|C_insta_entry|8942||
+space_name|label_name|label_flow_id|label_description|parent_label|move_to_space|label_rename|label_move_to_parent
+S_gsheet|C_gsheet_file|8932|Represents a  file of tyoe  gsheet ( google  spreadsheet )||||
+S_gsheet|C_gsheet_tab|8943|Represents a  tab (also names sheet) in a C_gsheet_file|C_gsheet_file|||
+S_gsheet|C_gsheet_row|8931|Represents a row in a C_gsheet_tab|C_gsheet_tab|||
+S_gsheet|C_gsheet_pocket_entry|8929|A pocket  entry derives from a C_gsheet_row in a C_gsheet_tab|C_gsheet_row|||
+S_uri|C_url|8937|Represents  a URL||||
+S_pocket|C_pocket_acc||Represents an account in pocket  ( https://www.getpocket.com)||||
+S_pocket|C_pocket_entry|8938|Represents an entry in pocket ( https://getpocket.com)|C_pocket_acc|||
+S_calendar|C_yyyymmdd|8934|Represents a day  (e.g.  20190410)||||
+S_calendar|C_month|8935|Represents a month in a calendar as a string. Matches the string to the month index (eg November=11)||||
+S_csv|C_csv|8838|Represents a csv file  (comma separated file)||||
+S_insta|C_insta_acc||Represents an account in instapaper  ( https://www.instapaper.com)||||
+S_insta|C_insta_acc||Represents an account in instapaper  ( https://www.instapaper.com)||||
+S_insta|C_insta_entry|8942|Represents an entry in instapaper ( https://www.instapaper.com)|C_insta_acc|||
+S_kanboard|C_kanb_inst||Represents an instance of Kanboard||||
+S_kanboard|C_flow_project||Represents a project in an C_kanb_inst|C_kanb_instance||C_kanb_prj|
+S_kanboard|C_kanb_prj_task||Represents a task in an C_kanb_prj|C_kanb_prj|||
+S_kanboard|C_kanb_prj_task_sub||Represents a subtask in an C_kanb_prj_task|C_kanb_prj_task|||
+S_kanboard|C_kanb_prj_task_extlink||Represents an external link in a C_kanb_prj_task|C_kanb_prj_task|||
+S_kanboard|C_flow_project_swimlane||Represents a swimlane in an C_kanb_prj|C_kanb_project||C_kanb_prj_lane|
+S_kanboard|C_flow_project_category||Represents a category in an C_kanb_prj|C_kanb_project||C_kanb_prj_cat|
+S_kanboard|C_flow_project_tag||Represents a tag in an C_kanb_prj|C_kanb_project||C_kanb_prj_tag|
+S_kanboard|C_kanb_prj_col||Represents a column in an C_kanb_prj|C_kanb_project|||
+S_kanboard|S_kanb_edge||Represents an edge between 2 C_kanb_task|C_kanb_instance|||
+S_kanboard|C_flow_dist_swimlane||Represents a distinct swimlane in an C_kanb_inst|C_kanb_instance||C_kanb_lane|
+S_kanboard|C_flow_dist_category||Represents a distinct category in an C_kanb_inst|C_kanb_instance||C_kanb_cat|
+S_kanboard|C_flow_dist_tag||Represents a distinct tag in an C_kanb_inst|C_kanb_instance||C_kanb_tag|
+S_kanboard|C_kanb_col||Represents a distinct column in an C_kanb_inst|C_kanb_instance|||
+S_csv|C_csv|8838|Represents a csv file  (comma separated file)||||
+S_csv|C_csv_column|||C_csv|||
+S_csv|C_csv_col_dist_value|||C_csv_column|||
+S_csv|C_csv_distinct_value|||C_csv|||
+S_csv|C_csv_line_str|||C_csv|||
+S_csv|C_csv_line|||C_csv_line_str|||
+S_csv|C_csv_statistic|||C_csv|||
