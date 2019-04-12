@@ -5,4 +5,6 @@ S_gsheet|C_gsheet_pocket_entry|8929
 S_uri|C_url|8937
 S_pocket|C_pocket_entry|8938
 S_calendar|C_yyyymmdd|8934
-
+S_calendar|C_month|8935
+S_csv|C_csv|8838
+S_insta|C_insta_entry|8942
