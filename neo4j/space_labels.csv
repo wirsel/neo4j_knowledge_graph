@@ -34,4 +34,7 @@ S_csv|C_csv_line_str|||C_csv|||
 S_csv|C_csv_line|||C_csv_line_str|||
 S_csv|C_csv_statistic|||C_csv|||
 S_cyp|C_cyp_query||Represents a cypher query/statement||||
-S_cyp|C_cyp_line||Represents a line in a cypher query/statement|C_cyp_query|||
+S_cyp|C_cyp_line||Represents a line in a C_cyp_query|C_cyp_query|||
+S_batch|H_batch||Represents a batch||||
+S_batch|H_batch_step||Represents a step in a H_batch|H_batch|||
+
