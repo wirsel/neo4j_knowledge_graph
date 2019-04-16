@@ -40,18 +40,18 @@ set q.tobe_props_values=apoc.coll.flatten([x in tobe.props | apoc.map.values(x, 
 return count(distinct q);
 
 /////////////////////////////////////////////////////////////////////
-// 1: clear former B_cyp_query
+// 1: create new C_cyp_query_version
 with $STEPS as steps where 1 in steps
 with $CYP_ID as CYP_ID
 
 MATCH(q:C_cyp_query {identifier:CYP_ID})
-OPTIONAL MATCH(q)-[qbe:BUFFER]->(qb:B_cyp_query)
+OPTIONAL MATCH(q)-[qbe:BUFFER]->(qb:C_cyp_query_version)
 set qbe.status="fromer"
 with q, size(collect(distinct qb)) as cnt
 
-//merge B_cyp_query
-CREATE    (qb:B_cyp_query {identifier:tostring(cnt+1)+"/"+q.identifier})
-set qb += {name:q.identifier, type:'B_cyp_query'}
+//merge C_cyp_query_version
+CREATE    (qb:C_cyp_query_version {identifier:tostring(cnt+1)+"/"+q.identifier})
+set qb += {name:q.identifier, type:'C_cyp_query_version'}
 set qb.nodes=[]
  
 merge(q)-[qbe:BUFFER]->(qb)
@@ -61,7 +61,7 @@ return count(distinct qb);
 /////////////////////////////////////////////////////////////////////
 // 2: reuse existing C_cyp_line
 with $STEPS as steps, $CYP_ID as CYP_ID where 2 in steps
-MATCH(q:C_cyp_query {identifier:CYP_ID})-[qbe:BUFFER {status:"actual"}]->(qb:B_cyp_query {name:CYP_ID})
+MATCH(q:C_cyp_query {identifier:CYP_ID})-[qbe:BUFFER {status:"actual"}]->(qb:C_cyp_query_version {name:CYP_ID})
 with q, qb
 Call apoc.coll.partition(q.tobe_props_values,size(q.tobe_props_keys)) Yield value as val
 with q, qb, val, apoc.map.fromLists(q.tobe_props_keys, val) as tobe_prop
@@ -73,7 +73,7 @@ return count(distinct l);
 /////////////////////////////////////////////////////////////////////
 // 3: set not equal C_cypPline to D_cyp_line
 with $STEPS as steps, $CYP_ID as CYP_ID where 3 in steps
-MATCH(qb:B_cyp_query {name:CYP_ID})<-[qbe:BUFFER {status:"actual"}]-(q:C_cyp_query {name:CYP_ID})-[e:HAS_LINE]->(l:C_cyp_line)
+MATCH(qb:C_cyp_query_version {name:CYP_ID})<-[qbe:BUFFER {status:"actual"}]-(q:C_cyp_query {name:CYP_ID})-[e:HAS_LINE]->(l:C_cyp_line)
 where not (l)-[:HAS_LINE]-(qb)
 Set l:D_cyp_line
 remove l.C_cyp_line
@@ -87,7 +87,7 @@ Call apoc.coll.partition(q.tobe_props_values,size(q.tobe_props_keys)) Yield valu
 with q, collect(aval) as vals
 unwind vals as val
 with q, apoc.map.fromLists(q.tobe_props_keys, val) as tobe_prop
-MATCH(qb:B_cyp_query {name:q.identifier})<-[qbe:BUFFER {status:"actual"}]-(q)-[e:HAS_LINE]->(ld:D_cyp_line {line:tobe_prop.line})
+MATCH(qb:C_cyp_query_version {name:q.identifier})<-[qbe:BUFFER {status:"actual"}]-(q)-[e:HAS_LINE]->(ld:D_cyp_line {line:tobe_prop.line})
 with qb,q,tobe_prop, collect(distinct ld) as lds
 with qb, q, tobe_prop, lds[0] as ld
 MERGE(qb)-[e:HAS_LINE]->(ald)
@@ -104,7 +104,7 @@ with $STEPS as steps, $CYP_ID as CYP_ID where 4 in steps
 match(q:C_cyp_query {identifier:CYP_ID})
 Call apoc.coll.partition(q.tobe_props_values,size(q.tobe_props_keys)) Yield value as values
 with q, apoc.map.fromLists(q.tobe_props_keys, values) as tobe_prop
-MATCH(qb:B_cyp_query {name:q.identifier})<-[qbe:BUFFER {status:"actual"}]-(q)
+MATCH(qb:C_cyp_query_version {name:q.identifier})<-[qbe:BUFFER {status:"actual"}]-(q)
 where not (qb)-[:HAS_LINE]->(:C_cyp_line {identifier:tobe_prop.identifier})
 MERGE (l:C_cyp_line {identifier:tobe_prop.identifier})
 set l +=tobe_prop
