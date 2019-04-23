@@ -41,4 +41,8 @@ S_cyp|C_cyp_line||represents the global distinct of C_cyp_query_line|C_cyp_query
 S_batch|H_batch||Represents a batch||||
 S_batch|H_batch_step||Represents a step in a H_batch|H_batch|||
 S_log|C_log||representa a log entry||||
+S_json|C_json||represemts a json stucture||||
+S_json|C_json_line||Represents a line  in a C_json|C_json|||
+S_json|C_json_map_open||Represents start of a map stucture in a C_json_line |C_json_line|||
+S_json|C_json_map_close||Represents end of a map stucture in a C_json_line |C_json_line|||
 
