@@ -1,10 +1,14 @@
-// load json
+
 
 with "https://github.com/wirsel/neo4j_knowledge_graph/blob/master/neo4j/space_labels.json" as fileorig
 with replace(replace(fileorig,"://github.com","://raw.githubusercontent.com"),"/blob","") as file
+with file, "data" as array, "n" as pk
 call apoc.load.json(file,"",{}) yield value
-unwind value.data as item
-with  item.n as name, collect(item.n) as colln
+unwind value[array] as item
+with  item[pk] as name, collect(apoc.convert.toString(item[pk])) as colln
 with *, size(colln) as cnt
 where cnt>1
 
+return name, cnt
+
+//item.n , cnt order by cnt desc
