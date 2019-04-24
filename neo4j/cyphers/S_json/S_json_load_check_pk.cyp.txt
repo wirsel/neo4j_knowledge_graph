@@ -1,7 +1,7 @@
 {
     source: 'S_json_load_check_pk.cyp.txt' ,
-    cypher: '
-with §lg as lg //a C_log node is expected here as an input 
+    cypher: 
+'with §lg as lg //a C_log node is expected here as an input 
 with *, "<<url>>" as file // url to the locarion of the file that contains the json 
 with *, "<<array>>" as array //the element in the json that contains the array of items to load
 with *, "<<pk>>" as pk //the key in the json items that is considered to be a primary key 
