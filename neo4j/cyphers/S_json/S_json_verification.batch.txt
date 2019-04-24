@@ -1,10 +1,11 @@
 {
     batch:
-        {
+    {
         baseurl: "https://raw.githubusercontent.com/wirsel/neo4j_knowledge_graph/master/neo4j/cyphers/",
-        steps:{[
+        steps:
+        [
             {ref:"S_json/S_json_load_check_pk.cyp.txt", modus:1},
             {ref:"", modus:0 }
-        ]}
+        ]
     }
 }
