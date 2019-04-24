@@ -1,1 +1,6 @@
-oo
+{ batch:{
+    steps:{[
+        {ref:"", modus:1},
+        {ref:"", modus:1}
+    ]}
+}
