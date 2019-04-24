@@ -20,7 +20,7 @@
 'END as logstr',
 'set lg.<<resKey>> = logstr',
 'return null'
-    ]
+    ],
     in:['url', 'array', 'pk', 'max_cnt', 'pk'],
     out: [ 'reskey'],
     params: ['lg']
