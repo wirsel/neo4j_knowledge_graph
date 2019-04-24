@@ -1,25 +1,26 @@
 {
     source: 'S_json_load_check_pk.cyp.txt' ,
     test: 'test',
-    cypher: 'with §lg as lg //a C_log node is expected here as an input 
-with *, "<<url>>" as file // url to the locarion of the file that contains the json 
-with *, "<<array>>" as array //the element in the json that contains the array of items to load
-with *, "<<pk>>" as pk //the key in the json items that is considered to be a primary key 
-call apoc.load.json(file,"",{}) yield value
-UNWIND value["<<array>>"] as item
-with item["<<pk>>"] as <<pk>>_value, 
-COLLECT(apoc.convert.toString(item["<<pk>>"])) as coll
-with 
-COLLECT([<<pk>>_value, size(coll)])as collcoll
-with filter(x in collcoll where x[1]> <<max_cnt>> ) as res
-with res, 
-CASE 
-WHEN res=[] THEN "SUCCESS! All valuess for key /<<pk>>/ occurred not more than <<max_cnt>> times in the json file" 
-ELSE "ERROR! The following valuess for key /<<pk>>/ occurred more the <<max_cnt>> times in the json file := "+ apoc.convert.toString(res) 
-END as logstr
-set lg.<<resKey>> = logstr
-
-return null',
+    cypher: [
+'with §lg as lg //a C_log node is expected here as an input',
+'with *, "<<url>>" as file // url to the locarion of the file that contains the json',
+'with *, "<<array>>" as array //the element in the json that contains the array of items to loadk,
+'with *, "<<pk>>" as pk //the key in the json items that is considered to be a primary key ',
+'call apoc.load.json(file,"",{}) yield value',
+'UNWIND value["<<array>>"] as item',
+'with item["<<pk>>"] as <<pk>>_value, ',
+'COLLECT(apoc.convert.toString(item["<<pk>>"])) as coll',
+'with ',
+'COLLECT([<<pk>>_value, size(coll)])as collcoll',
+'with filter(x in collcoll where x[1]> <<max_cnt>> ) as res',
+'with res, ',
+'CASE ',
+'WHEN res=[] THEN "SUCCESS! All valuess for key /<<pk>>/ occurred not more than <<max_cnt>> times in the json file" ',
+'ELSE "ERROR! The following valuess for key /<<pk>>/ occurred more the <<max_cnt>> times in the json file := "+ apoc.convert.toString(res) ',
+'END as logstr',
+'set lg.<<resKey>> = logstr',
+'return null'
+    ]
     in:['url', 'array', 'pk', 'max_cnt', 'pk'],
     out: [ 'reskey'],
     params: ['lg']
