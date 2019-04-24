@@ -1,0 +1,25 @@
+with "https://raw.githubusercontent.com/wirsel/neo4j_knowledge_graph/master/neo4j/cyphers/S_json/S_json_verification.batch.txt" as file
+With file, datetime() as dt
+MERGE( lg: C_log { identifier: apoc.convert.toString(dt)})
+Set lg.name=lg.identifier
+Set lg.type= "C_log"
+Set lg.dt= dt
+Set lg.laststep=0
+Set lg.status = "actual"
+set lg.batchfile= file
+
+Set lg.laststep=lg.laststep+1 with * CALL apoc.create.setProperty( [lg], 'step'+apoc.text.lpad(tostring(lg.laststep) ,3,"0"), "C_log successfully created") YIELD node with lg
+
+//A 2
+OPTIONAL MATCH(lh:C_log {status:"actual"} ) 
+Where not lh.identifier=lg.identifier
+detach delete lh;
+
+MATCH(lg:C_log {status:"actual"} ) 
+with lg, lg.batchfile as file
+call apoc.load.json(file,"",{}) yield value
+with lg, value.batch as batch
+with lg, batch, filter( x in batch.steps where x.modus=1 ) as activSteps
+with *, trim(batch.baseurl) as burl
+with *, case when right(burl,1)="/" THEN burl ELSE burl+"/" END as baseurl
+with lg, batch, activSteps, [ x in activSteps | replace(replace(baseurl+x.ref,"//","/"),":/","://")] as cypUrls
