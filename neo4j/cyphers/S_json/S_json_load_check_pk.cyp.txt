@@ -4,7 +4,7 @@
     cypher: [
 'with §lg as lg //a C_log node is expected here as an input',
 'with *, "<<url>>" as file // url to the locarion of the file that contains the json',
-'with *, "<<array>>" as array //the element in the json that contains the array of items to loadk,
+'with *, "<<array>>" as array //the element in the json that contains the array of items to loadk',
 'with *, "<<pk>>" as pk //the key in the json items that is considered to be a primary key ',
 'call apoc.load.json(file,"",{}) yield value',
 'UNWIND value["<<array>>"] as item',
