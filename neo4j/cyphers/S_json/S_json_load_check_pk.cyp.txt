@@ -19,7 +19,7 @@
 { line: 'ELSE ""ERROR! The following valuess for key /<<pk>>/ occurred more the <<max_cnt>> times in the json file := ""+ apoc.convert.toString(res) '},
 { line: 'END as logstr'},
 { line: 'set lg.<<resKey>> = logstr'},
-{ line: 'return null' } ],
+{ line: 'return null'}],
     in:['url', 'array', 'pk', 'max_cnt', 'pk'],
     out:['reskey'],
     params:['lg']
