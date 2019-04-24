@@ -17,7 +17,7 @@ CASE
 WHEN res=[] THEN "SUCCESS! All valuess for key /<<pk>>/ occurred not more than <<max_cnt>> times in the json file" 
 ELSE "ERROR! The following valuess for key /<<pk>>/ occurred more the <<max_cnt>> times in the json file := "+ apoc.convert.toString(res) 
 END as logstr
-set lg.<<stepkey>> = logstr
+set lg.<<resKey>> = logstr
 
 return null
 
