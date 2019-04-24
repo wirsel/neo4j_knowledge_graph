@@ -1,4 +1,3 @@
-
 {
     source: 'S_json_load_check_pk.cyp.txt' ,
     cypher: '
