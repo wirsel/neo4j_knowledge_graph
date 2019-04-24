@@ -10,7 +10,9 @@ unwind value["<<array>>"] as item
 with item["<<pk>>"] as <<pk>>_value, collect(apoc.convert.toString(item["<<pk>>"])) as coll
 with collect([<<pk>>_value, size(coll)])as collcoll
 with filter(x in collcoll where x[1]> <<max_cnt>> ) as res
-with res, CASE WHEN res=[] THEN "SUCCESS! All valuess for key /<<pk>> occurred not more than <<max_cnt>> times in the json file" ELSE "the following valuess for key /<<pk>> occurred more the <<max_cnt>> times in the json file := "+ apoc.convert.toString(res) END as logstr
+with res, CASE 
+WHEN res=[] THEN "SUCCESS! All valuess for key /<<pk>> occurred not more than <<max_cnt>> times in the json file" 
+ELSE "ERROR! The following valuess for key /<<pk>> occurred more the <<max_cnt>> times in the json file := "+ apoc.convert.toString(res) END as logstr
 set lg.<<stepkey>> = logstr
 
 return null
