@@ -38,9 +38,9 @@ reduce(s=cypParam, x in range(0, size(inkeys)-1) | replace(s,inkeys[x], kvMap[cy
 //unwind cypJso.cypher as cy
 
 set lg.cyp = cyp
+with *
+call apoc.periodic.commit(cyp, {lg:lg}) yield updates, executions, runtime, batches, failedBatches, batchErrors, failedCommits, commitErrors, wasTerminated 
 
-call apoc.periodic.commit(cyp, {lg:lg}) yield update, executions, runtime, batches, failedBatches, batchErrors, failedCommits, commitErrors, wasTerminated 
-
-Set lg.return = apoc.convert.toString({update: apoc.convert.toString(update), executions: apoc.convert.toString(executions), runtime: apoc.convert.toString(runtime), batches: apoc.convert.toString(batches), failedBatches: apoc.convert.toString(failedBatches), batchErrors: apoc.convert.toString(batchErrors), failedCommits: apoc.convert.toString(failedCommits), commitErrors: apoc.convert.toString(commitErrors), wasTerminated: apoc.convert.toString(wasTerminated)}) 
+Set lg.return = apoc.convert.toString({update: apoc.convert.toString(updates), executions: apoc.convert.toString(executions), runtime: apoc.convert.toString(runtime), batches: apoc.convert.toString(batches), failedBatches: apoc.convert.toString(failedBatches), batchErrors: apoc.convert.toString(batchErrors), failedCommits: apoc.convert.toString(failedCommits), commitErrors: apoc.convert.toString(commitErrors), wasTerminated: apoc.convert.toString(wasTerminated)}) 
 
 return cyp
