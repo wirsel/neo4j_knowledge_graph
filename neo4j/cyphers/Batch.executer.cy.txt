@@ -23,3 +23,22 @@ with lg, batch, filter( x in batch.steps where x.modus=1 ) as activSteps
 with *, trim(batch.baseurl) as burl
 with *, case when right(burl,1)="/" THEN burl ELSE burl+"/" END as baseurl
 with lg, batch, activSteps, [ x in activSteps | replace(replace(baseurl+x.ref,"//","/"),":/","://")] as cypUrls
+
+unwind range(0, size(cypUrls)-1) as x
+with lg, batch, activSteps, x, cypUrls[x] as url
+with lg, batch, activSteps, x, url, activSteps[x] as step
+call apoc.load.json(url,"",{}) yield value as cypJso
+with lg, batch, step, url, x, cypJso, [y in cypJso.in | "<<"+y+">>"] as inkeys
+with lg, batch, step, url, x, cypJso, inkeys
+with lg, batch, step, url, cypJso, inkeys, batch.in[step.in-1] as kvMap
+with lg, batch, step, url, cypJso, inkeys, kvMap
+with lg, batch, step, url, cypJso, inkeys, kvMap, apoc.text.join( [x in cypJso.cypher | x.line] , " ") as cypParam
+with lg, batch, step, url, cypJso, inkeys, cypParam, 
+reduce(s=cypParam, x in range(0, size(inkeys)-1) | replace(s,inkeys[x], kvMap[cypJso.in[x]])) as cyp
+//unwind cypJso.cypher as cy
+
+set lg.cyp = cyp
+
+call apoc.periodic.commit(cyp, {lg:lg}) yield
+
+return cyp
