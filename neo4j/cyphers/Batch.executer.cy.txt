@@ -34,8 +34,10 @@ with lg, batch, step, url, cypJso, inkeys, batch.in[step.in-1] as kvMap
 with lg, batch, step, url, cypJso, inkeys, kvMap
 with lg, batch, step, url, cypJso, inkeys, kvMap, apoc.text.join( [x in cypJso.cypher | x.line] , " ") as cypParam
 with lg, batch, step, url, cypJso, inkeys, cypParam, 
-reduce(s=cypParam, x in range(0, size(inkeys)-1) | replace(s,inkeys[x], kvMap[cypJso.in[x]])) as cyp
-//unwind cypJso.cypher as cy
+reduce(s=cypParam, x in range(0, size(inkeys)-1) | replace(s,inkeys[x], kvMap[cypJso.in[x]])) as cypx
+with *, replace(cypx, "§", "$") as cyp
+
+
 
 set lg.cyp = cyp
 with *
