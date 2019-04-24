@@ -8,7 +8,7 @@
             {ref:"", modus:0 }
         ],
         in:[
-            {url:'https://github.com/wirsel/neo4j_knowledge_graph/raw/master/neo4j/space_labels.json', array:'data', pk:'n', max_cnt:'1', pk:'n'}
+            {url:'https://github.com/wirsel/neo4j_knowledge_graph/raw/master/neo4j/space_labels.json', array:'data', pk:'n', max_cnt:'1', pk:'n', resKey:'json_pk_check'}
         ]
     }
 }
