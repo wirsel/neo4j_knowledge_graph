@@ -7,10 +7,11 @@ with *, "<<array>>" as array //the element in the json that contains the array o
 with *, "<<pk>>" as pk //the key in the json items that is considered to be a primary key 
 call apoc.load.json(file,"",{}) yield value
 unwind value["<<array>>"] as item
-with item["<<pk>>"] as <<pk>>_value, collect(apoc.convert.toString(item["<<pk>>"])) as colln
-with <<pk>>_value, size(colln) as cnt
-with <<pk>>_value, size(colln) as cnt
+with item["<<pk>>"] as <<pk>>_value, collect(apoc.convert.toString(item["<<pk>>"])) as coll
+with collect([<<pk>>_value, size(coll)])as collcoll
+with filter(x in collcoll where x[1]>0 ) as res
+return apoc.convert.toString(resss)
 
-return <<pk>>_value, cnt
+
 
 //item.n , cnt order by cnt desc
