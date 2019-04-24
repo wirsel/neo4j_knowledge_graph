@@ -19,13 +19,8 @@
 'ELSE "ERROR! The following valuess for key /<<pk>>/ occurred more the <<max_cnt>> times in the json file := "+ apoc.convert.toString(res) ',
 'END as logstr',
 'set lg.<<resKey>> = logstr',
-'return null'
-    ],
+'return null'],
     in:['url', 'array', 'pk', 'max_cnt', 'pk'],
     out: [ 'reskey'],
     params: ['lg']
 }
-
-
-
-//item.n , cnt order by cnt desc
