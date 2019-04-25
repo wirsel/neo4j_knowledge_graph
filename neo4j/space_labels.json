@@ -1,5 +1,4 @@
 { data:[
-{ id: "C_gsheet_file", label: "M_class"},
 { s:"S_gsheet", n:"C_gsheet_file", f:"8932", d:"Represents a  file of tyoe  gsheet ( google  spreadsheet )", p:"", sn:"", nn:"", pn:"", v:"", v:"gsf" }, 
 { s:"S_gsheet", n:"C_gsheet_tab", f:"8943", d:"Represents a  tab (also names sheet) in a C_gsheet_file", p:"C_gsheet_file", sn:"", nn:"", pn:"", v:"gst" }, 
 { s:"S_gsheet", n:"C_gsheet_row", f:"8931", d:"Represents a row in a C_gsheet_tab", p:"C_gsheet_tab", sn:"", nn:"", pn:"", v:"gsr" }, 
