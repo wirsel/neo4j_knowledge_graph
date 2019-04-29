@@ -2,7 +2,7 @@ space_label|flow_id|description
 S_gsheet|8924|
 S_calendar|8933|
 S_pocket|8925|
-S_instapaper|8939|
+S_insta|8939|
 S_uri|8936|
 S_csv|8837|
 S_filesys|8653|
@@ -12,3 +12,4 @@ S_log|8967|
 S_cyp|8966|
 S_batch|8965|
 S_neo4j|8961|
+S_json|8968|
