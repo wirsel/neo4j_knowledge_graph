@@ -44,6 +44,8 @@
 { s:"S_json", n:"C_json_line", f:"0", d:"Represents a line  in a C_json", p:"C_json", sn:"", nn:"", pn:"", v:"jsLi" }, 
 { s:"S_json", n:"C_json_map_open", f:"0", d:"Represents start of a map stucture in a C_json_line ", p:"C_json_line", sn:"", nn:"", pn:"", v:"jsMpOp" }, 
 { s:"S_json", n:"C_json_map_close", f:"0", d:"Represents end of a map stucture in a C_json_line ", p:"C_json_line", sn:"", nn:"", pn:"", v:"jsMpCl" },
-{ s:"S_neo4j", n:"C_neo4jdesktop_inst", f:"8962", d:"Represents an instance of Neo4j Desktop ap ", p:"", sn:"", nn:"", pn:"", v:"n4jdesk" },
-{ s:"S_neo4j", n:"C_neo4jdesktop_prj", f:"8964", d:"Represents a projecy managed by a C_neo4jdesktop_inst ", p:"C_neo4jdesktop_inst", sn:"", nn:"", pn:"", v:"n4jprj" }
+{ s:"S_neo4j", n:"C_neo4jdesktop_inst", f:"8962", d:"Represents an instance of Neo4j Desktop ap ", p:"", sn:"", nn:"", pn:"", v:"n4jDesk" },
+{ s:"S_neo4j", n:"C_neo4jdesktop_prj", f:"8964", d:"Represents a projecy managed by a C_neo4jdesktop_inst ", p:"C_neo4jdesktop_inst", sn:"", nn:"", pn:"", v:"n4jPrj" },
+{ s:"S_neo4j", n:"C_neo4j_db_inst", f:"", d:"Represents an instance of Neo4j database", p:"", sn:"", nn:"", pn:"", v:"n4jInst" },
+{ s:"S_neo4j", n:"C_neo4j_db_inst_stat", f:"", d:"Represents a statistic snapshot for a C_neo4j_db_inst ", p:"C_neo4j_db_inst", sn:"", nn:"", pn:"", v:"n4jInstStat" }
 ]}
