@@ -1,5 +1,5 @@
 {
-    source: 'S_json_load_check_pk.cyp.txt' ,
+    source: 'S_json_load_check_pk.cyp' ,
     test: 'test',
     cypher: [
 { line: 'with §lg as lg ', comment: '//a C_log node is expected here as an input'},
