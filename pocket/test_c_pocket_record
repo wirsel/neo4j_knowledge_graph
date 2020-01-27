@@ -1,0 +1,15 @@
+MATCH (n:c_pocket_tagraw) 
+where n.identifier =~ '^([^.])+(\\.{1})[a-zA-Z].*' //and not n.identifier starts with 'val'
+set n.status='wrong:xxx.yyyy!'
+union all
+MATCH (n:c_pocket_tagraw) 
+where n.identifier =~ '^([^.])+(\\.{3})[a-zA-Z].*' and not n.identifier starts with 'val'
+set n.status='wrong:xxx...yyyy!'
+RETURN n.identifier
+union all
+MATCH (n:c_pocket_tagraw) 
+where n.identifier starts with 'aate..' and not n.identifier =~ '^(aate)+(\\.{2})(2019|2020).*' //and not n.identifier starts with 'val'
+//set n.status='wrong:xxx...yyyy!'
+
+
+RETURN n.identifier
