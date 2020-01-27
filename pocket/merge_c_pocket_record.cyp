@@ -10,10 +10,14 @@ with line, [i in rest | replace(i, '</a></li>','')] as final
 
 //return distinct size(final)//, tags 
 //return left(final[0],4) limit 10
+
+//----merge(c_pocket_record)------
 with line,final,  {type:'c_pocket_record', name:line } as props
 merge(n:c_pocket_record {identifier:trim(tolower(props.name))})
 set n += props
 
+//----merge(c_url)------
+//----merge(c_pocket_record)-[is_url_in_pocket_record]-(c_url)
 with line, final,n as r
 with line, final,r, {type:'c_url', name:final[0] } as props
 merge(n:c_url {identifier:trim(tolower(props.name))})
@@ -22,6 +26,8 @@ with line, final, r, n as u
 merge(r)<-[e:is_url_in_pocket_record]-(u)
 set r.url=u.identifier
 
+//----merge(c_pocket_timeadded)------
+//----merge(c_pocket_record)-[time_added]-(c_pocket_timeadded)
 with line, final, r, u
 with line, final,r, u, {type:'c_pocket_timeadded', name:final[1] } as props
 merge(n:c_pocket_timeadded {identifier:trim(tolower(props.name))})
@@ -30,6 +36,9 @@ with line, final, r, u, n as t
 merge(r)-[e:time_added]->(t)
 set r.time_added=t.identifier
 
+
+//----merge(c_pocket_rawtags)------
+//----merge(c_pocket_record)-[has_raw_tags]-(c_pocket_rawtags)
 with line, final, r, u, t
 with line, final,r, u, t, {type:'c_pocket_rawtags', name:final[2] } as props
 merge(n:c_pocket_rawtags {identifier:trim(tolower(props.name))})
@@ -38,6 +47,9 @@ with line, final, r, u, t, n as rtags
 merge(r)-[e:has_raw_tags]->(rtags)
 set r.rawtags=rtags.identifier
 
+//----merge(c_pocket_tagraw)------
+//----merge(c_pocket_record)-[has_raw_tag]-(c_pocket_tagraw)
+//----merge(c_pocket_rawtags)-[contains_raw_tag]-(c_pocket_tagraw)
 with line, final, r, u, t, rtags, split(final[2],',') as rtagList
 unwind rtagList as item 
 	with line, final,r, u, t,rtags, item, {type:'c_pocket_tagraw', name:item } as props
