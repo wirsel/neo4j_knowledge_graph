@@ -10,6 +10,11 @@ union all
 MATCH (n:c_pocket_tagraw) 
 where n.identifier starts with 'aate..' and not n.identifier =~ '^(aate)+(\\.{2})(2019|2020).*' //and not n.identifier starts with 'val'
 //set n.status='wrong:xxx...yyyy!'
+RETURN n.identifier
+union
+MATCH (ymd_hms:c_yyyymmdd_hhmmss)-[]-(r:c_pocket_record)-[]-(rtags:c_pocket_rawtags)-[]-(n:c_pocket_tagraw) 
+where n.identifier starts with 'aate..' and not n.identifier='aate..yyyymmdd!..found0!' and not n.identifier =~ '^(aate)+(\\.{2})\\d{8}.*' //and not n.identifier starts with 'val'
+set n.status='wrong:not:aate..\\d{8}!..found0!'
 
 
 RETURN n.identifier
