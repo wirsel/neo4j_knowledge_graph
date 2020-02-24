@@ -10,7 +10,7 @@ with
  as now
 
 //LOAD CSV FROM 'file:\\20200127_1048_pocket.html' AS line FIELDTERMINATOR '°'
-CALL apoc.load.csv('FILE:///20200127_1048_pocket.html',{sep:'°',header:False}) YIELD lineNo, map, list
+CALL apoc.load.csv('FILE:///20200022_0000_pocket.html',{sep:'°',header:False}) YIELD lineNo, map, list
 with now, apoc.convert.toString(list[0]) as line limit 100000
 with now, replace(line, '<li><a href="','') as line
 with now, line, split(line, '" time_added="') as list
@@ -42,6 +42,7 @@ merge(n:c_url {identifier:trim(tolower(props.name))})
 set n += props
 with now, line, fp, r, n as u
 merge(r)<-[e:is_url_in_pocket_record]-(u)
+set e.status='attached'
 set u.pocket_record_id=r.identifier
 
 //----merge(c_pocket_timeadded)------
@@ -52,6 +53,7 @@ merge(n:c_pocket_timeadded {identifier:trim(tolower(props.name))})
 set n += props
 with line, fp, r, u, n as t
 merge(r)-[e:time_added]->(t)
+set e.status='attached'
 set t.pocket_record_id=r.identifier
 
 //----merge(c_pocket_rawtags)------
@@ -62,6 +64,7 @@ merge(n:c_pocket_rawtags {identifier:trim(tolower(props.name))})
 set n += props
 with line, fp, r, u, t, n as rtags
 merge(r)-[e:has_raw_tags]->(rtags)
+set e.status='attached'
 set rtags.pocket_record_id=r.identifier
 
 //----merge(c_pocket_tagraw)------
@@ -74,6 +77,7 @@ unwind rtagList as item
 	set n += props
 	with line, fp, r, u, t, rtags,item, n as rtag
 	merge(r)-[e:has_raw_tag]->(rtag)
+    set e.status='attached'
 	merge(rtags)-[ee:contains_raw_tag]->(rtag)
     set rtag.pocket_record_id=r.identifier
 with line, fp, r, u, t, rtags, collect(item) as list
