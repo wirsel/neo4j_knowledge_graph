@@ -8,25 +8,21 @@ with
     +case when time.second<10 then '0'+tostring(time.second) ELSE  tostring(time.second)  END 
     +case when time.millisecond<10 then '0'+tostring(time.millisecond) ELSE  tostring(time.millisecond)  END
  as now
-
-//LOAD CSV FROM 'file:\\20200127_1048_pocket.html' AS line FIELDTERMINATOR '°'
-CALL apoc.load.csv('FILE:///20200022_0000_pocket.html',{sep:'°',header:False}) YIELD lineNo, map, list
+CALL apoc.load.csv('20200915_ril_export.html',{sep:'°'}) YIELD lineNo, map, list
 with now, apoc.convert.toString(list[0]) as line limit 100000
-with now, replace(line, '<li><a href="','') as line
-with now, line, split(line, '" time_added="') as list
-with now, line, list, apoc.coll.flatten([list[0]]+split(list[1], '" tags="')) as tags
-//with line, list, CASE WHEN list[1] contains ' tags=">' 	THEN replace(list[1], ELSE 
-with now, line, tags,
-CASE When left(tags[2],1)=">" THEN apoc.coll.flatten(tags[0..-1]+['']+split(tags[-1],'">')) 
-ELSE apoc.coll.flatten(tags[0..-1]+split(tags[-1],'">')) END as rest
-with now, line, [i in rest | replace(i, '</a></li>','')] as final 
-with now, line, final, {
-	url:final[0] , 
-    time_added:tostring(final[1]),
-    tags: tostring(coalesce(final[2],'')), 
-    description: tostring(coalesce(final[3],''))}
-as fp
+with now, line, apoc.text.regexGroups(apoc.convert.toString(line), '^.*href="([^"]+)".*$')[0][1] as url
+with now, line, url, apoc.text.regexGroups(apoc.convert.toString(line), '^.*time_added="([^"]+)".*$')[0][1] as time_added
+with now, line, url, time_added, coalesce( apoc.text.regexGroups(apoc.convert.toString(line), '^.*tags="([^"]+)".*$')[0][1] , '') as tags
+with now, line, url, time_added, tags, [i in split(tags,',')| trim(i)] as tag_list
 
+with now, line, url, time_added, tags, tag_list, {
+	url:url, 
+    time_added:time_added,
+    tags: tags
+    //,    description: tostring(coalesce(final[3],''))
+ }
+as fp
+where fp.url starts with 'http' and size(fp.time_added)=10 and fp.time_added=~ '\\d{10}'
 
 //----merge(c_pocket_record)------
 with now, line, fp, {type:'c_pocket_record', name:fp.url+'|'+ fp.time_added, last_update:now } as props
@@ -70,7 +66,7 @@ set rtags.pocket_record_id=r.identifier
 //----merge(c_pocket_tagraw)------
 //----merge(c_pocket_record)-[has_raw_tag]-(c_pocket_tagraw)
 //----merge(c_pocket_rawtags)-[contains_raw_tag]-(c_pocket_tagraw)
-with line, fp, r, u, t, rtags, split(fp.tags,',') as rtagList
+with line, fp, r, u, t, rtags, [i in split(fp.tags,',')| trim(i)] as rtagList
 unwind rtagList as item 
 	with line, fp, r, u, t,rtags, item, {type:'c_pocket_tagraw', name:trim(item) } as props
 	merge(n:c_pocket_tagraw {identifier:trim(tolower(props.name))})
@@ -82,4 +78,6 @@ unwind rtagList as item
     set rtag.pocket_record_id=r.identifier
 with line, fp, r, u, t, rtags, collect(item) as list
 
-return count(r)
+return count(distinct rtags)// limit 10
+//RETURN now, url, time_added, tag_list limit 10
+//return count(distinct props.name)
